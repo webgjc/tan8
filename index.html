@@ -5,21 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
     <style>
-        .content{
-            width: 711px;
-            height: 1124px;
+        .search {
+            width: 100%;
+        }
+        .dropdown-menu {
+            max-height: 200px !important;
         }
     </style>
 </head>
 <body>
     <div class="content">
-        <object type="application/x-shockwave-flash" data="" width="100%" height="100%" id="divflash" style="visibility: visible;">
+        <object type="application/x-shockwave-flash" data="" width="48%" height="1000px" id="divflash" style="visibility: visible; display: inline-block;">
             <param name="wmode" value="Opaque">
             <param name="allowNetworking" value="all">
             <param name="allowFullScreen" value="true">
         </object>
+        <div style="width: 51%; float: right;">
+            <table data-toggle="table" 
+                data-url="./info.json"
+                data-pagination="true"
+                data-search="true" 
+                id="table"
+                data-filter-control="true"
+                data-click-to-select="true"
+                data-show-search-clear-button="true">
+                <thead>
+                    <tr>
+                        <th data-field="id" data-sortable="true">ID</th>
+                        <th data-field="tag" data-filter-control="select" data-filter-data="var:filterDefaults">标签</th>
+                        <th data-field="title">标题</th>
+                        <th data-field="author">作者</th>
+                        <th data-field="view_time" data-sortable="true">查看次数</th>
+                        <th data-field="like_time" data-sortable="true">喜爱次数</th>
+                        <th data-field="difficult" data-sortable="true" data-filter-control="select" data-filter-data="var:filterDiff">困难级数</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <script>
         function getQueryVariable(variable){
             var query = window.location.search.substring(1);
@@ -33,6 +65,41 @@
         var id = getQueryVariable("id") ? getQueryVariable("id"): "58546";
         var url = "http://www.77music.com/flash/" + id + ".swf";
         document.getElementById("divflash").setAttribute("data", url);
+
+        $(function() {
+            $('#table').bootstrapTable();
+        })
+
+        var filterDefaults = {
+            "动漫": "动漫",
+            "古典": "古典",
+            "流行": "流行",
+            "儿歌": "儿歌",
+            "民乐": "民乐",
+            "免费": "免费",
+            "原创": "原创",
+            "轻音乐": "轻音乐",
+            "电子琴": "电子琴",
+            "练习曲": "练习曲",
+            "其他": "其他",
+        }
+
+        var filterDiff = {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9"
+        }
+
+        $('#table').on('dbl-click-row.bs.table', function (row, $element, field) {
+            var url = "http://www.77music.com/flash/" + $element["id"] + ".swf";
+            document.getElementById("divflash").setAttribute("data", url);
+        })
     </script>
 </body>
 </html>
